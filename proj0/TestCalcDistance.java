@@ -42,7 +42,7 @@ public class TestCalcDistance {
         Body b2 = new Body(3.0, 3.0, -999, -999, 8e5, "aegir.gif");
         Body b3 = new Body(5.0, -3.0, -999, -999, 9e6, "rocinante.gif");
 
-        checkEquals(b1.calcDistance(b2), Math.sqrt(2.0 + 9.0), "calcDistance()", 0.01);
+        checkEquals(b1.calcDistance(b2), Math.sqrt(4.0 + 9.0), "calcDistance()", 0.01);
         checkEquals(b1.calcDistance(b3), Math.sqrt(16.0 + 9.0), "calcDistance()", 0.01);
     }
 }
