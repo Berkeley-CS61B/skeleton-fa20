@@ -10,8 +10,7 @@ public class TestCalcNetForceExertedByXY {
      *  Tests calcNetForceExertedByXY.
      */
     public static void main(String[] args) {
-        calcNetForceExertedByXYTest1();
-        calcNetForceExertedByXYTest2();
+        calcNetForceExertedByXY();
     }
     /**
      *  Checks whether or not two Doubles are equal and prints the result.
@@ -52,37 +51,7 @@ public class TestCalcNetForceExertedByXY {
     /**
      *  Checks the Body class to make sure calcNetForceExertedByXY works.
      */
-    private static void calcNetForceExertedByXYTest1() {
-        System.out.println("Checking calcNetForceExertedByXY...");
-
-        Body b1 = new Body(1.0, 0.0, -999, -999, 7e5, "samh.gif");
-        Body b2 = new Body(3.0, 3.0, -999, -999, 8e5, "aegir.gif");
-        Body b3 = new Body(5.0, -3.0, -999, -999, 9e6, "rocinante.gif");
-
-        Body[] bodies = {b2, b3};
-
-        double xNetForce = b1.calcNetForceExertedByX(bodies);
-        double yNetForce = b1.calcNetForceExertedByY(bodies);
-
-        checkEquals(15.04, round(xNetForce, 2), "calcNetForceExertedByX()");
-        checkEquals(-7.69, round(yNetForce, 2), "calcNetForceExertedByY()");
-
-        System.out.println("Running test again, but with array that contains the target planet itself.");
-
-        bodies = new Body[]{b1, b2, b3};
-
-        xNetForce = b1.calcNetForceExertedByX(bodies);
-        yNetForce = b1.calcNetForceExertedByY(bodies);
-
-        checkEquals(15.04, round(xNetForce, 2), "calcNetForceExertedByX()");
-        checkEquals(-7.69, round(yNetForce, 2), "calcNetForceExertedByY()");
-
-    }
-
-    /**
-     *  Checks the Body class to make sure calcNetForceExertedByXY works.
-     */
-    private static void calcNetForceExertedByXYTest2() {
+    private static void calcNetForceExertedByXY() {
         System.out.println("Checking calcNetForceExertedByXY...");
 
         Body b1 = new Body(1.0, 1.0, 3.0, 4.0, 5.0, "jupiter.gif");

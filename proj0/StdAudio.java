@@ -1,7 +1,7 @@
 /*************************************************************************
  *  Compilation:  javac StdAudio.java
  *  Execution:    java StdAudio
- *  
+ *
  *  Simple library for reading, writing, and manipulating .wav files.
 
  *
@@ -19,7 +19,7 @@ import javax.sound.sampled.*;
 
 /**
  *  <i>Standard audio</i>. This class provides a basic capability for
- *  creating, reading, and saving audio. 
+ *  creating, reading, and saving audio.
  *  <p>
  *  The audio format uses a sampling rate of 44,100 (CD quality audio), 16-bit, monaural.
  *
@@ -50,7 +50,7 @@ public final class StdAudio {
     // do not instantiate
     private StdAudio() { }
 
-   
+
     // static initializer
     static { init(); }
 
@@ -63,7 +63,7 @@ public final class StdAudio {
 
             line = (SourceDataLine) AudioSystem.getLine(info);
             line.open(format, SAMPLE_BUFFER_SIZE * BYTES_PER_SAMPLE);
-            
+
             // the internal buffer is a fraction of the actual buffer size, this choice is arbitrary
             // it gets divided because we can't expect the buffered data to line up exactly with when
             // the sound card decides to push out its samples.
@@ -85,7 +85,7 @@ public final class StdAudio {
         line.drain();
         line.stop();
     }
-    
+
     /**
      * Write one sample (between -1.0 and +1.0) to standard audio. If the sample
      * is outside the range, it will be clipped.
@@ -101,7 +101,7 @@ public final class StdAudio {
         buffer[bufferSize++] = (byte) s;
         buffer[bufferSize++] = (byte) (s >> 8);   // little Endian
 
-        // send to sound card if buffer is full        
+        // send to sound card if buffer is full
         if (bufferSize >= buffer.length) {
             line.write(buffer, 0, buffer.length);
             bufferSize = 0;
@@ -147,8 +147,18 @@ public final class StdAudio {
         catch (MalformedURLException e) { e.printStackTrace(); }
         // URL url = StdAudio.class.getResource(filename);
         if (url == null) throw new RuntimeException("audio " + filename + " not found");
-        AudioClip clip = Applet.newAudioClip(url);
-        clip.play();
+
+        try {
+            AudioInputStream audioIn = AudioSystem.getAudioInputStream(url);
+            // Get a sound clip resource.
+            Clip clip = AudioSystem.getClip();
+            // Open audio clip and load samples from the audio input stream.
+            clip.open(audioIn);
+            clip.start();
+        } catch (IOException | UnsupportedAudioFileException | LineUnavailableException e) {
+            e.printStackTrace();
+        }
+
     }
 
     /**
@@ -163,8 +173,17 @@ public final class StdAudio {
         catch (MalformedURLException e) { e.printStackTrace(); }
         // URL url = StdAudio.class.getResource(filename);
         if (url == null) throw new RuntimeException("audio " + filename + " not found");
-        AudioClip clip = Applet.newAudioClip(url);
-        clip.loop();
+        try {
+            AudioInputStream audioIn = AudioSystem.getAudioInputStream(url);
+            // Get a sound clip resource.
+            Clip clip = AudioSystem.getClip();
+            // Open audio clip and load samples from the audio input stream.
+            clip.open(audioIn);
+            clip.start();
+            clip.loop(Clip.LOOP_CONTINUOUSLY);
+        } catch (IOException | UnsupportedAudioFileException | LineUnavailableException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -256,13 +275,13 @@ public final class StdAudio {
      * Test client - play an A major scale to standard audio.
      */
     public static void main(String[] args) {
-        
+
         // 440 Hz for 1 sec
         double freq = 440.0;
         for (int i = 0; i <= StdAudio.SAMPLE_RATE; i++) {
             StdAudio.play(0.5 * Math.sin(2*Math.PI * freq * i / StdAudio.SAMPLE_RATE));
         }
-        
+
         // scale increments
         int[] steps = { 0, 2, 4, 5, 7, 9, 11, 12 };
         for (int i = 0; i < steps.length; i++) {
@@ -273,7 +292,7 @@ public final class StdAudio {
 
         // need to call this in non-interactive stuff so the program doesn't terminate
         // until all the sound leaves the speaker.
-        StdAudio.close(); 
+        StdAudio.close();
 
         // need to terminate a Java program with sound
         System.exit(0);
