@@ -42,10 +42,7 @@ public class TestCalcForceExertedBy {
         Body b2 = new Body(3.0, 3.0, -999, -999, 8e5, "aegir.gif");
         Body b3 = new Body(5.0, -3.0, -999, -999, 9e6, "rocinante.gif");
 
-        checkEquals(b1.calcForceExertedBy(b2), 2.8732307692307693, "calcForceExertedBy()", 0.01);
+        checkEquals(b1.calcForceExertedBy(b2), 2.8732, "calcForceExertedBy()", 0.01);
         checkEquals(b1.calcForceExertedBy(b3), 16.8084, "calcForceExertedBy()", 0.01);        
-    
-        System.out.println("Checking that the force exerted by a body on itself is 0");
-        checkEquals(b1.calcForceExertedBy(b1), 0.0, "calcForceExertedBy()", 0.01);        
     }
 }
