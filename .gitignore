@@ -5,6 +5,7 @@
 !**.json
 !.fatweleminus
 !.gitignore
+!library-fa20
 *.class
 *.log
 *.ctxt
